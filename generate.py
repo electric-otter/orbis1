@@ -1,3 +1,4 @@
+import yaml
 import argparse
 import requests
 
@@ -20,7 +21,7 @@ def load_config(path="temperature.yaml"):
 
 def search_duckduckgo(query):
     # DuckDuckGo search API (using the !bang syntax to get a quick API response)
-    url = f"https://duckduckgo.com/?t=h_&q={query}"
+    url = f"https://duckduckgo.com/html/?q={query}"
     response = requests.get(url)
     if response.status_code == 200:
         return response.text  # Or parse the HTML if you need structured data
@@ -43,8 +44,8 @@ def main():
         # Perform DuckDuckGo search if --search is provided
         search_results = search_duckduckgo(args.prompt)
         if search_results is None:
-            print("Failed to generate.")
-            search_results = "I dont understand that..."
+            print("Failed to fetch search results.")
+            search_results = "No search results found."
 
     # Create the model and generate the response
     model = Orbis1Model(temperature, search_results)
